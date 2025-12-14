@@ -1,5 +1,6 @@
 import http from "http";
 import App from "./app";
+import { DatabaseConnection } from "./config/database";
 
 const PORT = 8080
 const HOST = "http://localhost"
@@ -19,7 +20,8 @@ const listen = () => {
 export const startServer = async () => {
     try {
         listen();
-        console.log(`SQL DB has stablished`);
+        await DatabaseConnection.initialize();
+        console.log(`[Server][start] Database connected successfully`);   
     } catch (error) {
         console.log(`[Server][start] error: ${error}`);
     }
