@@ -1,8 +1,9 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import { Offer } from "../entities/offers.entity";
+import { Provider } from "../entities/providers.entity";
 
-export const DatabaseConnection = new DataSource({
+export const AppDataSource = new DataSource({
     type: "mysql",
     host: "localhost",
     port: 3306,
@@ -11,5 +12,5 @@ export const DatabaseConnection = new DataSource({
     database: "almedia",
     synchronize: true,
     logging: false,
-    entities: [Offer],
+    entities: [Offer, Provider],
 });

@@ -1,5 +1,5 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index } from "typeorm";
-import { IOffer } from "./interfaces/IOffers";
+import { IOffer } from "./interfaces/IOffer";
 
 @Entity("offers")
 @Index(["providerName", "externalOfferId"], { unique: true })
