@@ -1,4 +1,4 @@
-export const payload = {
+export const offer1Payload = {
     query: {
         pubid: "1",
         appid: 1,

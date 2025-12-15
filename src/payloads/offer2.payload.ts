@@ -1,4 +1,4 @@
-export const payload = {
+export const offer2Payload = {
     status: "success",
     data: {
         // offers from offer2 provider

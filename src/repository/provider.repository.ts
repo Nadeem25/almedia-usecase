@@ -4,6 +4,9 @@ import { Provider } from "../entities/providers.entity";
 export class ProviderRepository {
     private provider = AppDataSource.getRepository(Provider);
 
+    /**
+    * Fetch the active offers providers from the Database
+    */
     async findActiveProviders(): Promise<Provider[]> {
         try {
             const activeProviders = await this.provider.find({ where: { isActive: true } });

@@ -2,11 +2,12 @@ import http from "http";
 import App from "./app";
 import { AppDataSource } from "./config/database";
 import { executeOfferJob } from "./job/offer.job";
+import { Application } from "express";
 
 const PORT = 8080
 const HOST = "http://localhost"
 
-const application = new App().init();
+const application : Application = new App().init();
 const server = http.createServer(application);
 
 const listen = () => {
