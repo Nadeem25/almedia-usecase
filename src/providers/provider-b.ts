@@ -7,7 +7,7 @@ export class OfferProviderB implements IOfferProvider {
 
     readonly providerCode: string = "PROVIDER_B";
 
-    transformOfferData(data: any): IOffer[] | null {
+    transform(data: any): IOffer[] | null {
         try {
             return Object.values(data).map((entry: any) => {
                 const o = entry.Offer;

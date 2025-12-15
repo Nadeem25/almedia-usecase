@@ -10,7 +10,7 @@ export class OfferProviderA implements IOfferProvider {
     readonly providerCode: string = "PROVIDER_A";
 
 
-    transformOfferData(data: any): IOffer[] | null {
+    transform(data: any): IOffer[] | null {
         try {
             return data?.response?.offers?.map((offerData: any) => {
                 const offer = new Offer();

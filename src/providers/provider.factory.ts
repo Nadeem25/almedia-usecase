@@ -9,7 +9,7 @@ export class ProviderFactory {
         "PROVIDER_B": OfferProviderB
     }
 
-    static createProvider(provider: Provider): IOfferProvider | null {
+    static createProvider(provider: Provider): IOfferProvider{
             const ProviderClass = this.providersMap[provider.code];
             if (!ProviderClass) {
                 throw new Error(`No provider found for code: ${provider.code}`);
