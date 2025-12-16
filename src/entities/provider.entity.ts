@@ -1,7 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { IOffer } from "./interfaces/offer.interface";
+import { IProvider } from "./interfaces/provider.interface";
 
 @Entity({ name: "providers" })
-export class Provider {
+export class Provider implements IProvider{
   @PrimaryGeneratedColumn()
   id!: number;
 

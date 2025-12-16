@@ -1,5 +1,5 @@
 import { AppDataSource } from "../config/database";
-import { Provider } from "../entities/providers.entity";
+import { Provider } from "../entities/provider.entity";
 
 export class ProviderRepository {
     private provider = AppDataSource.getRepository(Provider);

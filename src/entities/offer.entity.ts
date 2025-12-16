@@ -1,8 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, Index, Unique } from "typeorm";
 import { IOffer } from "./interfaces/offer.interface";
 
-@Entity("offers")
-@Index(["providerName", "externalOfferId"], { unique: true })
+//@Unique(["externalOfferId", "providerName"])
+@Entity("offer")
+@Index("uniq_provider_external_offer", ["providerName", "externalOfferId"], {
+  unique: true,
+})
+// @Index(["providerName", "externalOfferId"], { unique: true })
 export class Offer implements IOffer {
   @PrimaryGeneratedColumn()
   id!: number;
@@ -34,9 +38,9 @@ export class Offer implements IOffer {
   @Column({ type: "varchar", length: 256, name: "offer_url_template" })
   offerUrlTemplate!: string;
 
-  @Column({ type: "varchar", length: 255, name: "provider_name" })
+  @Column({ type: "varchar", length: 255, name: "provider_name", unique: true })
   providerName!: string;
 
-  @Column({ type: "varchar", length: 255, name: "external_offer_id" })
+  @Column({ type: "varchar", length: 255, name: "external_offer_id", unique: true })
   externalOfferId!: string;
 }

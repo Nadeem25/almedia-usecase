@@ -1,13 +1,13 @@
 import { IOffer } from "../entities/interfaces/offer.interface";
-import { Offer } from "../entities/offers.entity";
+import { Offer } from "../entities/offer.entity";
 import { generateSlug } from "../utility/slug.util";
-import { IOfferProvider } from "./interfaces/offer-provider.interface";
+import { IProviderAdapter } from "./interfaces/provider-adapter.interface";
 
-export class OfferProviderB implements IOfferProvider {
+export class OfferProviderB implements IProviderAdapter {
 
     readonly providerCode: string = "PROVIDER_B";
 
-    transform(data: any): IOffer[] | null {
+    transform(data: any): IOffer[]  {
         try {
             return Object.values(data).map((entry: any) => {
                 const o = entry.Offer;
@@ -37,7 +37,7 @@ export class OfferProviderB implements IOfferProvider {
             });
         } catch (error) {
             console.error("Error transforming offer data:", error);
-            return null;
+            return [];
         }
     }
 }

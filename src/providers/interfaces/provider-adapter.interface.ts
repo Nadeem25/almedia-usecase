@@ -1,7 +1,7 @@
 import { IOffer } from "../../entities/interfaces/offer.interface";
 
 
-export interface IOfferProvider {
+export interface IProviderAdapter {
     readonly providerCode: string;
-    transform (data: any): IOffer[] | null
+    transform (data: any): IOffer[] 
 }
