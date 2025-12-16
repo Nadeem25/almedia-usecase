@@ -8,21 +8,19 @@ export class ProviderController extends BaseController {
 
     getProviderAOffers = (req: Request, res: Response) => {
         try {
-            console.log(`I am here`);
-            
             const providerA = offer1Payload
-            return this.success(res, providerA, "User fetched successfully");
+            this.success(res, providerA, "User fetched successfully");
         } catch (err) {
-            return this.error(res, "Failed to fetch user");
+            this.error(res, "Failed to fetch user");
         }
     };
 
     getProviderBOffers = (req: Request, res: Response) => {
         try {
             const providerB = offer2Payload?.data
-            return this.success(res, providerB, "User created successfully", 201);
+            this.success(res, providerB, "User created successfully", 201);
         } catch (err) {
-            return this.error(res, "Failed to create user");
+            this.error(res, "Failed to create user");
         }
     };
 }

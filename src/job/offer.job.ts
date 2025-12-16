@@ -22,7 +22,7 @@ export const providerProcessor = async (offerProvider: IProvider, offerRepositor
             // Step 4: Validate each offer data of the provider
             const validationError = validateOffer(offer);
             if (validationError.length > 0) {
-                console.warn(`[OfferJob][executeOfferJob] Validation failed for offer ${offer.externalOfferId}: ${validationError.join(", ")}`);
+                console.warn(`[OfferJob][executeOfferJob][${offerProvider.code}] Validation failed for offer ${offer.externalOfferId} due to: ${validationError.join(", ")}`);
                 continue
             }
             console.info(`[OfferJob][executeOfferJob] [${offerProvider.code}] Data Validated for offer ID: ${offer.externalOfferId}, proceeding to upsert.`);
@@ -33,7 +33,7 @@ export const providerProcessor = async (offerProvider: IProvider, offerRepositor
             console.info(`[OfferJob][providerProcessor][${offerProvider.code}] processing completed.`);
         }
     } catch (error) {
-        console.error(`[OfferJob][providerProcessor][${offerProvider.code}] error: ${error}`);
+        console.error(`[OfferJob][providerProcessor][${offerProvider.code}] ${error}`);
     }
 }
 

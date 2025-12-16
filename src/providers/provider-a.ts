@@ -17,7 +17,7 @@ export class OfferProviderA implements IProviderAdapter {
             return data?.response?.offers?.map((offerData: any) => {
                 const offer = new Offer();
 
-                offer.externalOfferId = String(offerData?.offer_id);
+                offer.externalOfferId = offerData?.offer_id;
                 offer.name = offerData?.offer_name;
                 offer.description = offerData?.offer_desc;
                 offer.requirements = offerData?.call_to_action;
