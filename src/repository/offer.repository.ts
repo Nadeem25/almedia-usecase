@@ -7,11 +7,10 @@ export class OfferRepository implements IOfferRepository {
     private offer = AppDataSource.getRepository("Offer");
 
     /**
-    * Save Offers into the Database
+    * Save or Update Offers into the Database
     */
     async upsertOffer(offer: IOffer): Promise<void> {
         try {
-            //const result = await this.offer.upsert(offer, { conflictPaths:["externalOfferId", "providerName"], skipUpdateIfNoValuesChanged: true });
             const result = await this.offer.
                 createQueryBuilder()
                 .insert()

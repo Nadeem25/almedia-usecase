@@ -1,7 +1,7 @@
 import { AppDataSource } from "../config/database";
 import { Provider } from "../entities/provider.entity";
 
-export class ProviderRepository {
+export class ProviderRepository implements ProviderRepository {
     private provider = AppDataSource.getRepository(Provider);
 
     /**

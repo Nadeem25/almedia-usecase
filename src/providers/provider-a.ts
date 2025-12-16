@@ -9,7 +9,9 @@ export class OfferProviderA implements IProviderAdapter {
 
     readonly providerCode: string = "PROVIDER_A";
 
-
+    /**
+     * Transform the raw data fetched from the provider API into IOffer entities
+     */
     transform(data: any): IOffer[] {
         try {
             return data?.response?.offers?.map((offerData: any) => {

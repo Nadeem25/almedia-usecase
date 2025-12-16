@@ -10,6 +10,11 @@ export class ProviderFactory {
         "PROVIDER_B": OfferProviderB
     }
 
+    /**
+     * Create an instance of the provider adapter based on the provider code
+     * @param provider The provider entity
+     * @returns An instance of the corresponding provider adapter
+     */
     static createProvider(provider: IProvider): IProviderAdapter{
             const ProviderClass = this.providersMap[provider.code];
             if (!ProviderClass) {

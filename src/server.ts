@@ -22,7 +22,9 @@ const listen = () => {
 export const startServer = async () => {
     try {
         listen();
+        // Initialize Database Connection
         await AppDataSource.initialize();
+        // Execute the Offer Processing Job
         executeOfferJob();
         console.log(`[Server][start] Database connected successfully`);   
     } catch (error) {
