@@ -15,7 +15,7 @@ The application must:
 
 ---
 
-## ▶️ How to Start the Application
+## How to Start the Application
 
 ### 1. Install Dependencies
  - npm install
