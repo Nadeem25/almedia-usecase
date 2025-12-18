@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn, Index, Unique } from "typeorm";
-import { IOffer } from "./interfaces/offer.interface";
+import { IOffer } from "./interfaces/IOffer";
+
 
 //@Unique(["externalOfferId", "providerName"])
 @Entity("offer")

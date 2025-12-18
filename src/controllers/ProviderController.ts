@@ -1,6 +1,6 @@
 // src/controllers/UserController.ts
 import { Request, Response } from "express";
-import { BaseController } from "./base.controller";
+import { BaseController } from "./BaseController";
 import { offer1Payload } from "../payloads/offer1.payload";
 import { offer2Payload } from "../payloads/offer2.payload";
 

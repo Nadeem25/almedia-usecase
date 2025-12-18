@@ -1,7 +1,7 @@
 import { AppDataSource } from "../config/database";
-import { IOffer } from "../entities/interfaces/offer.interface";
-import { Offer } from "../entities/offer.entity";
-import { IOfferRepository } from "./interfaces/offer.repository.interface";
+import { IOffer } from "../entities/interfaces/IOffer";
+import { Offer } from "../entities/Offer";
+import { IOfferRepository } from "./interfaces/IOfferRepository";
 
 export class OfferRepository implements IOfferRepository {
     private offer = AppDataSource.getRepository("Offer");

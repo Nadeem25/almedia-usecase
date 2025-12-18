@@ -1,6 +1,6 @@
 import axios from "axios";
 import { offer1Payload } from "../payloads/offer1.payload";
-import { IProvider } from "../entities/interfaces/provider.interface";
+import { IProvider } from "../entities/interfaces/IProvider";
 
 export async function fetchOfferProviderData(offerProvider: IProvider): Promise<any> {
     try {

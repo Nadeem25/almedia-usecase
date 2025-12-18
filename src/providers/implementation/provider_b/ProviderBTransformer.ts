@@ -1,13 +1,14 @@
-import { IOffer } from "../entities/interfaces/offer.interface";
-import { Offer } from "../entities/offer.entity";
-import { generateSlug } from "../utility/slug.util";
-import { IProviderAdapter } from "./interfaces/provider-adapter.interface";
+import { IOffer } from "../../../entities/interfaces/IOffer";
+import { Offer } from "../../../entities/Offer";
+import { generateSlug } from "../../../utility/slug.util";
+import { IProviderTranformer } from "../../interfaces/IProviderTranformer";
 
-export class OfferProviderB implements IProviderAdapter {
-
-    readonly providerCode: string = "PROVIDER_B";
-
-    transform(data: any): IOffer[]  {
+export class ProviderBTransformer implements IProviderTranformer {
+    readonly providerCode: string = "PROVIDER_B";   
+    /**
+    * Transform the raw data fetched from the provider API into IOffer entities
+    */  
+     transform(data: any): IOffer[]  {
         try {
             return Object.values(data).map((entry: any) => {
                 const o = entry.Offer;

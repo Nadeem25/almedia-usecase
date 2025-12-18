@@ -1,8 +1,9 @@
-import { IProvider } from "../entities/interfaces/provider.interface";
-import { IProviderAdapter } from "../providers/interfaces/provider-adapter.interface";
-import { ProviderFactory } from "../providers/provider.factory";
-import { OfferRepository } from "../repository/offer.repository";
-import { ProviderRepository } from "../repository/provider.repository";
+import { IProvider } from "../entities/interfaces/IProvider";
+import { IProviderFactory } from "../providers/interfaces/IProviderFactory";
+import { IProviderTranformer } from "../providers/interfaces/IProviderTranformer";
+import { ProviderFactoryRegistery } from "../providers/registery/ProviderFactoryRegistery";
+import { OfferRepository } from "../repository/OfferRepository";
+import { ProviderRepository } from "../repository/ProviderRepository";
 import { fetchOfferProviderData } from "../services/http.service";
 import { validateOffer } from "../services/validator.service";
 
@@ -10,13 +11,14 @@ import { validateOffer } from "../services/validator.service";
 export const providerProcessor = async (offerProvider: IProvider, offerRepository: OfferRepository): Promise<void> => {
 
     try {
-        const providerInstance: IProviderAdapter = ProviderFactory.createProvider(offerProvider);
+        const providerFactoryInstance: IProviderFactory= ProviderFactoryRegistery.getProviderFactory(offerProvider.code)
         // Step 1: Fetch Offer Data from Provider API
         const offerProviderData = await fetchOfferProviderData(offerProvider);
         console.info(`[OfferJob][providerProcessor][${offerProvider.code}] processing started.........`);
 
         // Step 2: Transform the offers data
-        const offers = providerInstance.transform(offerProviderData.data);
+        const transformer: IProviderTranformer = providerFactoryInstance.createTransformer()
+        const offers = transformer.transform(offerProviderData.data);
         console.log(`[OfferJob][executeOfferJob] [${offerProvider.code}] Data Transformed offers: ${JSON.stringify(offers)}`);
         for (const offer of offers) {
             // Step 4: Validate each offer data of the provider

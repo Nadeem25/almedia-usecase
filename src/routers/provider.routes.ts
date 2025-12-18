@@ -1,5 +1,5 @@
 import express from 'express'
-import { ProviderController } from '../controllers/provider.controller';
+import { ProviderController } from '../controllers/ProviderController';
 
 export default class RouterBinder {
 

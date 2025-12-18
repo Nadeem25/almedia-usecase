@@ -1,17 +1,13 @@
-import { off } from "node:cluster";
-import { IOffer } from "../entities/interfaces/offer.interface";
-import { IProviderAdapter } from "./interfaces/provider-adapter.interface";
-import { generateSlug } from "../utility/slug.util";
-import { Offer } from "../entities/offer.entity";
-import { log } from "node:console";
+import { IOffer } from "../../../entities/interfaces/IOffer";
+import { Offer } from "../../../entities/Offer";
+import { generateSlug } from "../../../utility/slug.util";
+import { IProviderTranformer } from "../../interfaces/IProviderTranformer";
 
-export class OfferProviderA implements IProviderAdapter {
-
+export class ProviderATransformer implements IProviderTranformer {
     readonly providerCode: string = "PROVIDER_A";
-
     /**
-     * Transform the raw data fetched from the provider API into IOffer entities
-     */
+    * Transform the raw data fetched from the provider API into IOffer entities
+    */
     transform(data: any): IOffer[] {
         try {
             return data?.response?.offers?.map((offerData: any) => {
