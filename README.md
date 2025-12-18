@@ -15,6 +15,22 @@ The application must:
 
 ---
 
+## Mock Providers for Testing
+
+For testing and demonstration purposes, two mock provider APIs have been implemented:
+
+- **Provider A API**  
+  Endpoint: `/api/v1/provider_a`  
+  Response: `offer1.payload`
+
+- **Provider B API**  
+  Endpoint: `/api/v1/provider_b`  
+  Response: `offer2.payload`
+
+These mock APIs simulate different provider response formats and allow the offer ingestion job to be tested without relying on external services.
+
+---
+
 ## How to Start the Application
 
 ### 1. Install Dependencies
