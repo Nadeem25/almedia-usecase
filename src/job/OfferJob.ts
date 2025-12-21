@@ -1,60 +1,70 @@
 import { IProvider } from "../entities/interfaces/IProvider";
-import { IProviderFactory } from "../providers/interfaces/IProviderFactory";
-import { IProviderTranformer } from "../providers/interfaces/IProviderTranformer";
-import { ProviderFactoryRegistery } from "../providers/registery/ProviderFactoryRegistery";
+import { IProviderFactory } from "../services/interfaces/IProviderFactory";
+import { IProviderTranformer } from "../services/interfaces/IProviderTranformer";
+import { ProviderFactoryRegistery } from "../services/providers/registery/ProviderFactoryRegistery";
 import { OfferRepository } from "../repository/OfferRepository";
 import { ProviderRepository } from "../repository/ProviderRepository";
-import { fetchOfferProviderData } from "../services/http.service";
-import { validateOffer } from "../services/validator.service";
+import { validateOffer } from "../services/providers/validator/ValidatorService";
+import { inject, injectable } from "inversify";
+import { TYPES } from "../container/types";
+import { IOfferRepository } from "../repository/interfaces/IOfferRepository";
+import { IHttpService } from "../services/interfaces/IHttpService";
+
+@injectable()
+export class Job {
+
+    constructor(@inject(TYPES.OfferRepository) private offerRepository: IOfferRepository,
+        @inject(TYPES.ProviderRepository) private providerRepository: ProviderRepository,
+        @inject(TYPES.ProviderFactoryRegistry) private providerFactoryRegistery: ProviderFactoryRegistery,
+        @inject(TYPES.HttpService) private httpService: IHttpService
+    ) { }
 
 
-export const providerProcessor = async (offerProvider: IProvider, offerRepository: OfferRepository): Promise<void> => {
-
-    try {
-        const providerFactoryInstance: IProviderFactory= ProviderFactoryRegistery.getProviderFactory(offerProvider.code)
-        // Step 1: Fetch Offer Data from Provider API
-        const offerProviderData = await fetchOfferProviderData(offerProvider);
-        console.info(`[OfferJob][providerProcessor][${offerProvider.code}] processing started.........`);
-
-        // Step 2: Transform the offers data
-        const transformer: IProviderTranformer = providerFactoryInstance.createTransformer()
-        const offers = transformer.transform(offerProviderData.data);
-        console.log(`[OfferJob][executeOfferJob] [${offerProvider.code}] Data Transformed offers: ${JSON.stringify(offers)}`);
-        for (const offer of offers) {
-            // Step 4: Validate each offer data of the provider
-            const validationError = validateOffer(offer);
-            if (validationError.length > 0) {
-                console.warn(`[OfferJob][executeOfferJob][${offerProvider.code}] Validation failed for offer ${offer.externalOfferId} due to: ${validationError.join(", ")}`);
-                continue
-            }
-            console.info(`[OfferJob][executeOfferJob] [${offerProvider.code}] Data Validated for offer ID: ${offer.externalOfferId}, proceeding to upsert.`);
-
-            // Step 5: Insert or Update each offer into the Database.
-            await offerRepository.upsertOffer(offer);
-            console.info(`[OfferJob][executeOfferJob] [${offerProvider.code}] Offer upserted successfully for offer ID: ${offer.externalOfferId}`);
-            console.info(`[OfferJob][providerProcessor][${offerProvider.code}] processing completed.`);
+    /** 
+    * Main Job Executor to process offers from active providers
+    */
+    async executeJOb(): Promise<void> {
+        try {
+            const providerList = await this.providerRepository.findActiveProviders();
+            await Promise.allSettled(
+                providerList.map(async (provider) => {
+                    await this.providerProcessor(provider);
+                }));
+        } catch (error) {
+            console.error(`[OfferJob][executeOfferJob] error while executing offer job: ${error}`);
         }
-    } catch (error) {
-        console.error(`[OfferJob][providerProcessor][${offerProvider.code}] ${error}`);
-    }
-}
 
-
-
-/** 
- * Main Job Executor to process offers from active providers
- */
-export const executeOfferJob = async () => {
-    const providerRepository = new ProviderRepository();
-    const offerRepository = new OfferRepository();
-    try {
-        const offerProviderList = await providerRepository.findActiveProviders();
-        await Promise.allSettled(
-            offerProviderList.map(async (offerProvider) => {
-                await providerProcessor(offerProvider, offerRepository);
-            }));
-    } catch (error) {
-        console.error(`[OfferJob][executeOfferJob] error while executing offer job: ${error}`);
     }
 
+
+    async providerProcessor(provider: IProvider): Promise<void> {
+
+        try {
+            // Step 1: Fetch Offer Data from Provider API
+            const offerProviderData = await this.httpService.fetchProviderOffers(provider);
+            console.info(`[OfferJob][providerProcessor][${provider.code}] processing started.........`);
+
+            // Step 2: Transform the offers data
+            const providerFactoryInstance: IProviderFactory = this.providerFactoryRegistery.getProviderFactory(provider.code)
+            const transformer: IProviderTranformer = providerFactoryInstance.createTransformer()
+            const offers = transformer.transform(offerProviderData.data);
+            console.log(`[OfferJob][executeOfferJob] [${provider.code}] Data Transformed offers: ${JSON.stringify(offers)}`);
+            for (const offer of offers) {
+                // Step 4: Validate each offer data of the provider
+                const validationError = validateOffer(offer);
+                if (validationError.length > 0) {
+                    console.warn(`[OfferJob][executeOfferJob][${provider.code}] Validation failed for offer ${offer.externalOfferId} due to: ${validationError.join(", ")}`);
+                    continue
+                }
+                console.info(`[OfferJob][executeOfferJob] [${provider.code}] Data Validated for offer ID: ${offer.externalOfferId}, proceeding to upsert.`);
+
+                // Step 5: Insert or Update each offer into the Database.
+                await this.offerRepository.upsertOffer(offer);
+                console.info(`[OfferJob][executeOfferJob] [${provider.code}] Offer upserted successfully for offer ID: ${offer.externalOfferId}`);
+                console.info(`[OfferJob][providerProcessor][${provider.code}] processing completed.`);
+            }
+        } catch (error) {
+            console.error(`[OfferJob][providerProcessor][${provider.code}] ${error}`);
+        }
+    }
 }

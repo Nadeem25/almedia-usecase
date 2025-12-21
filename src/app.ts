@@ -1,5 +1,5 @@
 import express from "express";
-import RouterBinder from "./routers/provider.routes";
+import RouterBinder from "./routers/ProviderRoute";
 import cors, { CorsOptions } from "cors";
 import { corsOptions } from "./config/security.config";
 

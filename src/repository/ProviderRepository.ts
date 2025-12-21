@@ -13,7 +13,7 @@ export class ProviderRepository implements IProviderRepository {
         try {
             const activeProviders = await this.provider.find({ where: { isActive: true } });
             console.log(`[ProviderRepository][findActiveProviders] active providers: ${JSON.stringify(activeProviders)}`);
-            return JSON.stringify(activeProviders) as unknown as IProvider[];
+            return activeProviders as IProvider[];
         } catch (error) {
             console.error(`[ProviderRepository][findActiveProviders] error while fetching active providers: ${error}`);
             throw new Error(`Error fetching active providers: ${error}`);

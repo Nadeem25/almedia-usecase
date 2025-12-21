@@ -3,6 +3,7 @@ import { Offer } from "../../../entities/Offer";
 import { generateSlug } from "../../../utility/slug.util";
 import { IProviderTranformer } from "../../interfaces/IProviderTranformer";
 
+
 export class ProviderBTransformer implements IProviderTranformer {
     readonly providerCode: string = "PROVIDER_B";   
     /**

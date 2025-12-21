@@ -1,3 +1,4 @@
+import { injectable } from "inversify";
 import { IOffer } from "../../../entities/interfaces/IOffer";
 import { Offer } from "../../../entities/Offer";
 import { generateSlug } from "../../../utility/slug.util";

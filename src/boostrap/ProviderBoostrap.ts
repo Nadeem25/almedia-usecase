@@ -1,8 +1,12 @@
-import { ProviderAFactory } from '../providers/implementation/factory/ProviderAFactory';
-import { ProviderBFactory } from '../providers/implementation/factory/ProviderBFactory';
-import { ProviderFactoryRegistery } from '../providers/registery/ProviderFactoryRegistery';
+import { Container } from 'inversify';
+import { IProviderFactoryRegistery } from '../services/interfaces/IProviderFactoryRegistery';
+import { IProviderFactory } from '../services/interfaces/IProviderFactory';
+import { TYPES } from '../container/types';
 
-export function registerProviderFactories() {
-  ProviderFactoryRegistery.registerProviderFactory(new ProviderAFactory());
-  ProviderFactoryRegistery.registerProviderFactory(new ProviderBFactory());
+export function registerProviders(container: Container): void {
+  const registery = container.get<IProviderFactoryRegistery>(TYPES.ProviderFactoryRegistry);
+
+  registery.registerProviderFactory(container.get<IProviderFactory>(TYPES.ProviderAFactory), "PROVIDER_A");
+  registery.registerProviderFactory(container.get<IProviderFactory>(TYPES.ProviderBFactory), "PROVIDER_B");
+  
 }

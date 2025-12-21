@@ -1,4 +1,4 @@
-import { IOffer } from "../entities/interfaces/IOffer";
+import { IOffer } from "../../../entities/interfaces/IOffer";
 
 export function validateOffer(offer: IOffer): string[] {
   const errors: string[] = [];
