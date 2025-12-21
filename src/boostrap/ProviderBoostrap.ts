@@ -1,5 +1,5 @@
-import { ProviderAFactory } from '../providers/implementation/provider_a/ProviderAFactory';
-import { ProviderBFactory } from '../providers/implementation/provider_b/ProviderBFactory';
+import { ProviderAFactory } from '../providers/implementation/factory/ProviderAFactory';
+import { ProviderBFactory } from '../providers/implementation/factory/ProviderBFactory';
 import { ProviderFactoryRegistery } from '../providers/registery/ProviderFactoryRegistery';
 
 export function registerProviderFactories() {
