@@ -4,19 +4,21 @@ import { IProviderTranformer } from "../services/interfaces/IProviderTranformer"
 import { ProviderFactoryRegistery } from "../services/providers/registery/ProviderFactoryRegistery";
 import { OfferRepository } from "../repository/OfferRepository";
 import { ProviderRepository } from "../repository/ProviderRepository";
-import { validateOffer } from "../services/providers/validator/ValidatorService";
 import { inject, injectable } from "inversify";
 import { TYPES } from "../container/types";
 import { IOfferRepository } from "../repository/interfaces/IOfferRepository";
 import { IHttpService } from "../services/interfaces/IHttpService";
+import { IValidator } from "../services/interfaces/IValidator";
 
 @injectable()
 export class Job {
 
-    constructor(@inject(TYPES.OfferRepository) private offerRepository: IOfferRepository,
+    constructor(
+        @inject(TYPES.OfferRepository) private offerRepository: IOfferRepository,
         @inject(TYPES.ProviderRepository) private providerRepository: ProviderRepository,
         @inject(TYPES.ProviderFactoryRegistry) private providerFactoryRegistery: ProviderFactoryRegistery,
-        @inject(TYPES.HttpService) private httpService: IHttpService
+        @inject(TYPES.HttpService) private httpService: IHttpService,
+        @inject(TYPES.ValidatorService) private validator: IValidator
     ) { }
 
 
@@ -51,9 +53,9 @@ export class Job {
             console.log(`[OfferJob][executeOfferJob] [${provider.code}] Data Transformed offers: ${JSON.stringify(offers)}`);
             for (const offer of offers) {
                 // Step 4: Validate each offer data of the provider
-                const validationError = validateOffer(offer);
+                const validationError = this.validator.validateOffer(offer);
                 if (validationError.length > 0) {
-                    console.warn(`[OfferJob][executeOfferJob][${provider.code}] Validation failed for offer ${offer.externalOfferId} due to: ${validationError.join(", ")}`);
+                    console.warn(`[OfferJob][executeOfferJob][${provider.code}] Validation failed for offer Id ${offer.externalOfferId} due to: ${validationError.join(", ")}`);
                     continue
                 }
                 console.info(`[OfferJob][executeOfferJob] [${provider.code}] Data Validated for offer ID: ${offer.externalOfferId}, proceeding to upsert.`);

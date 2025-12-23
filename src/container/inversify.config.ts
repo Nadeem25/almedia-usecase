@@ -11,6 +11,8 @@ import { IProviderFactory } from "../services/interfaces/IProviderFactory";
 import { IProviderFactoryRegistery } from "../services/interfaces/IProviderFactoryRegistery";
 import { Job } from "../job/OfferJob";
 import { HttpService } from "../services/HttpService";
+import { IValidator } from "../services/interfaces/IValidator";
+import { ValidatorService } from "../services/providers/validator/ValidatorService";
 
 
 const container = new Container();
@@ -22,6 +24,7 @@ container.bind<IProviderFactory>(TYPES.ProviderBFactory).to(ProviderBFactory);
 container.bind<IProviderFactoryRegistery>(TYPES.ProviderFactoryRegistry).to(ProviderFactoryRegistery).inSingletonScope();
 container.bind(TYPES.HttpService).to(HttpService)
 container.bind(TYPES.Job).to(Job);
+container.bind<IValidator>(TYPES.ValidatorService).to(ValidatorService)
 
 export { container };
 

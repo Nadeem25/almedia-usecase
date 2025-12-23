@@ -11,4 +11,6 @@ export const TYPES = {
 
   HttpService: Symbol.for('HttpService'),
   Job: Symbol.for('Job'),
+
+  ValidatorService: Symbol.for('ValidatorService')
 };
